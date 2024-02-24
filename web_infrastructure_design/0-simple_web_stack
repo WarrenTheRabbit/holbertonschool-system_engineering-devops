@@ -1,0 +1,43 @@
+Let's discuss a single server LAMP stack.
+
+A user wants to access our website so they type `www.foobar.com` into their browser. Eventually, the browser will render a web page customised with data relevant to the user. This is made possible by a series of intereactions between the browser and within the server.
+
+
+| Task | Description | Delegated to... | Collaborators |
+| ---- | ----------- | ---------------- | ------------- |
+| DNS Resolution | Convert `www.foobar.com` to an IP address | DNS Resolver | Root DNS Server, TLD DNS Server, Authoritative DNS Server |
+| HTTP Request | Send an HTTP request to the server at that IP address | OS | Browser, Web Server |
+| Web Server | Get and serve the requested web page | Itself | OS, CGI |
+| Application Server | Generate the requested web page | Itself | CGI, Database |
+| Database Server | Provide data to the application server | Itself | Application Server |
+
+
+### Finding the server
+The browser uses the DNS Resolver in the OS (or the DNS cache) to convert the human-readable domain name to an IP address. 
+- recursive DNS query sent to root DNS server
+- recursive DNS query sent to TLD DNS server
+- query eventually arrives at authoritative DNS server
+- IP address looked up in DNS Zone File
+
+Once determined, the browser sends an HTTP request to the server at that IP address.
+
+### The Server
+Our server has multiple software components that work together to serve the web page. In our case, these software components are within the one server, but in a more complex system, they might be on different servers.
+
+- **the web server software** (NGINX) listens for incoming HTTP requests and uses the Common Gateway Interface to pass requests that are associated with scripts to the application server software (something like PHP-FPM)
+
+- **the application server software** generates a web page using application files hosted by the web server that retrieve data from **the database server** (MySQL) software when executed, and send the result back to the web server software as web files
+
+- **the database server software** stores information that needs to be persisted between requests, retrieved by the application server software as needed, and operated on with CRUD operations when appropriate
+
+### Design Problems
+There are issues with this setup because it does not have failover, redundancy, or load balancing.
+
+SPOF - Without an active/active or active/passive failover setup, if any component fails, the entire system fails.
+
+Maintenance downtime equals System failure - Similarly, if the system is down for maintenance, the entire system is down because there is no redundancy.
+
+Increased traffic overloads - if the system is overloaded, the entire system is overloaded because there is no load balancing.
+
+
+
