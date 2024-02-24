@@ -1,0 +1,21 @@
+## Firewalls
+Firewalls are used to filter network traffic in and out of a machine. 
+
+e.g. If network traffic is suspicious or harmful, such as a DoS attach, the firewall can filter traffic from that IP.
+
+## HTTPS
+In the new design, traffic is served over HTTPS so that data is encrypted in transit. This prevents eavesdropping and tampering and makes it possible to authenticate the server to the client, vice versa, and to safely handle more use cases such as ecommerce.
+
+## Monitoring
+Monitoring is used to detect and respond to security threats and incidents. It can also used to make future architecture decisions based on usage patterns and performance trends.
+
+The monitoring tool involves a clinet collecting data and sending it to the monitoring system. For example, to monitor Queries Per Second, you would collect data from the web server and send it to the monitoring system. You could then use the monitoring system to set up alerts for when the QPS is too high or too low.
+
+## SSL offloading
+You can terminate the SSL and decrypt the traffic sent to the web servers. This reduces the load on the web servers. However, it is a security risk because the traffic is unencrypted between the load balancer and the web servers. If the load balancer is public and the web servers are private, this is not a problem. But if the web servers are public, this is a problem.
+
+## One writeable database
+If only one of the MySQL databases is writeable, the application will not be able to write data to the database if the writeable database goes down. This is a single point of failure. This issue can be resolved by using a solution that provides automatic promotion.
+
+## Lack of specialisation
+A problem with the current design is lack of specialisation. The web server, database and application all have different usage and failure patterns. But if every server is identical, you cannot scale components separately, which may result in over or underutilisation of a server's resources. Furthermore, you cannot create custom security or failover policies for each component.
