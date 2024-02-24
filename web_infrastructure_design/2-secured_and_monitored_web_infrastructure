@@ -18,4 +18,4 @@ You can terminate the SSL and decrypt the traffic sent to the web servers. This 
 If only one of the MySQL databases is writeable, the application will not be able to write data to the database if the writeable database goes down. This is a single point of failure. This issue can be resolved by using a solution that provides automatic promotion.
 
 ## Lack of specialisation
-A problem with the current design is lack of specialisation. The web server, database and application all have different usage and failure patterns. But if every server is identical, you cannot scale components separately, which may result in over or underutilisation of a server's resources. Furthermore, you cannot create custom security or failover policies for each component.
+A problem with the current design is lack of specialisation. The web server, database and application all have different usage and failure patterns. But if every server is identical, you cannot scale components separately, which may result in over or underutilisation of a server's resources. Furthermore, you cannot create custom security or failover policies for each functional component.
