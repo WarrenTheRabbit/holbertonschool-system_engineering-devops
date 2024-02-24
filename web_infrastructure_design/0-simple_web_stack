@@ -19,12 +19,16 @@ The browser uses the DNS Resolver in the OS (or the DNS cache) to convert the hu
 - query eventually arrives at authoritative DNS server
 - IP address looked up in DNS Zone File
 
-Once determined, the browser sends an HTTP request to the server at that IP address.
+Once determined, the browser sends an HTTP request to the server at that IP address. In the www.foobar.com, there will be entires that resolve to an IP address. These are the A records. It is possible that www.foobar.com is such a record. But it could also be an alias for foobar.com, in which case the A record for foobar.com is used.
 
 ### The Server
-Our server has multiple software components that work together to serve the web page. In our case, these software components are within the one server, but in a more complex system, they might be on different servers.
+A server is normally located in a data center: either a compute resource rented from a cloud provider or a company's on prem data centre. It communicates with other resources over TCP/IP.
 
-- **the web server software** (NGINX) listens for incoming HTTP requests and uses the Common Gateway Interface to pass requests that are associated with scripts to the application server software (something like PHP-FPM)
+Our server is a single machine (either virtual or physical) with an OS to manage the hardware and software resources needed to serve web pages. For us, that is the software components of the LAMP-like stack: Linux, NGINX, MySQL, and PHP (via a Common Gateway Interface like PHP-FPM). In more complex system, the application, persistence and presentation layers might be distributed onto other server resources.
+
+- **the web server software** (NGINX) listens for incoming HTTP requests and serves static content (HTML, css and javascriptf files). But users have come to expect dynamic content that can satisfy a range of interactive use cases (such as ecommerce, personalised pages, etc). 
+
+To serve dynamic content, the web server invokes application logic by mapping HTTP requests to scripts that the Common Gateway Interface will have executed on **application server software**. For us, that is something like PHP-FM returning the results of PHP scripts.
 
 - **the application server software** generates a web page using application files hosted by the web server that retrieve data from **the database server** (MySQL) software when executed, and send the result back to the web server software as web files
 
@@ -35,7 +39,7 @@ There are issues with this setup because it does not have failover, redundancy, 
 
 SPOF - Without an active/active or active/passive failover setup, if any component fails, the entire system fails.
 
-Maintenance downtime equals System failure - Similarly, if the system is down for maintenance, the entire system is down because there is no redundancy.
+Maintenance downtime equals System failure - Similarly, if the system undergoes maintenance that requires a reset, the entire system is down because there is no redundancy. 
 
 Increased traffic overloads - if the system is overloaded, the entire system is overloaded because there is no load balancing.
 
